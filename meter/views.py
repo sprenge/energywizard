@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import JsonResponse
 from django.contrib.auth.models import User, Group
-from gezin.models import MeterTypeHousehold
+from household.models import MetertypeHousehold
 from meter.models import MeterReading
 from meter.models import MeterType
 from django.utils import timezone
@@ -72,17 +72,17 @@ def save_meter(request):
             return r
 
         meter_reading = MeterReading()
-        meter_reading.opnemer = user
+        meter_reading.meter_register = user
         meter_type_household = MeterTypeHousehold.objects.get(id=data['id'])
         meter_type = meter_type_household.meter_type
         meter_reading.meter_type = meter_type
         meter_reading.household = household
         try:
-            stand = str(data['meterWhole']) + "." + data['meterFrag']
-            meter_reading.stand = float(stand)
+            meter_r = str(data['meterWhole']) + "." + data['meterFrag']
+            meter_reading.stand = float(meter_r)
         except Exception as e:
             print (e)
-            r['reason'] = "Ingave meterstand is niet correct, pas aan aub"
+            r['reason'] = "Meter reading not correct"
             return r
 
         try:
@@ -91,16 +91,15 @@ def save_meter(request):
                             minute=data['meterMinuten'], hour=data['meterUur'])
         except Exception as e:
             print (e)
-            r['reason'] = "Ingave tijd is niet correct, pas aan aub"
+            r['reason'] = "Timestamp not correct"
             return r
 
-        meter_stand.tijdstip = dt
+        meter_reading.ts = dt
         try:
-            meter_stand.save()
-            print ("weggeschreven")
+            meter_reading.save()
         except Exception as e:
             print (e)
-            r['reason'] = "Wegschrijven mislukt, graag 1 stand per tijdstip en meter type"
+            r['reason'] = "Save failed, only 1 reading for a given timestamp"
             return r
 
         r['result'] = True
@@ -108,30 +107,32 @@ def save_meter(request):
         r['meterWhole'] = 0
         r['meterFrag'] = '0'
     else:
-        r['reason'] = "Hmm, contacteer je energiemeester"
+        r['reason'] = "Hmm, contact your admin"
         r = {'result': False}
     return JsonResponse(r, safe=False)
 
 
-def get_meter_standen(request):
+def get_meter_readings(request):
     meter_info = {'result': True}
     user = User.objects.get(username=request.user)
     try:
-        gezin_rec = GebruikerGezin.objects.get(user=user)
-        gezin = gezin_rec.gezin
+        household_rec = UserHousehold.objects.get(user=user)
+        household = household_rec.household
     except Exception as e:
         print (e)
         meter_info['result'] = False
         return
-    meter_stands = MeterStand.objects.filter(gezin=gezin).order_by('-tijdstip')
+    meter_readings = MeterReading.objects.filter(household=household).order_by('-ts')
     meter_list = []
-    for meter_stand in meter_stands:
+    for meter_reading in meter_readings:
         rec = {}
         dt = localtime(meter_stand.tijdstip)
         rec['time'] = dt.strftime('%d %b %Y %H:%M')
-        rec['meter_type'] = str(meter_stand.meter_type)
-        rec['meter_stand'] = str(meter_stand.stand)
-        rec['opnemer'] = str(meter_stand.opnemer.first_name) + " " + str(meter_stand.opnemer.last_name)
+        rec['meter_type'] = str(meter_reading.meter_type)
+        rec['meter_reading'] = str(meter_reading.meter_reading)
+        rec['meter_register'] = \
+            str(meter_reading.meter_register.first_name) + " " +\
+            str(meter_reading.meter_register.last_name)
         meter_list.append(rec)
 
     return JsonResponse(meter_list, safe=False)

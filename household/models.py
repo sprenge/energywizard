@@ -14,7 +14,7 @@ class Household(models.Model):
     country = CountryField('country')
     info = models.TextField('info', blank=True, null=True)
     active = models.BooleanField("guided at this moment", default=True)
-    degreeday_source = models.ForeignKey(DegreedaySource, blank-True, null=True)
+    degreeday_source = models.ForeignKey(DegreedaySource, blank=True, null=True)
 
     def __unicode__(self):
         return str(self.name)+"_"+str(postal_code)

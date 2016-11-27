@@ -8,7 +8,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
-from gezin.models import GebruikerGezin
+from household.models import UserHousehold
 
 
 def is_user_member_of(user, group):
@@ -27,13 +27,13 @@ def homepage(request):
     info['first_name'] = user.first_name
     info['last_name'] = user.last_name
     try:
-        gezin_rec = GebruikerGezin.objects.get(user=user)
-        gezin = gezin_rec.gezin
+        household_rec = UserHousehold.objects.get(user=user)
+        household = household_rec.household
     except Exception as e:
         print (e)
         return render_to_response("fatal_error.html", info, RequestContext(request))
 
-    info['gezin'] = str(gezin.naam)
+    info['household'] = str(household.name)
     info['energiemeester'] = is_user_member_of(user, 'energiemeester')
     return render_to_response("homepage.html", info, RequestContext(request))
 

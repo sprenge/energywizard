@@ -41,7 +41,7 @@ class MeterType(models.Model):
 
 
 class MeterReading(models.Model):
-    opnemer = models.ForeignKey(User)
+    meter_register = models.ForeignKey(User)
     meter_type = models.ForeignKey(MeterType)
     household = models.ForeignKey(Household)
     meter_reading = models.FloatField("meter reading")
@@ -54,4 +54,4 @@ class MeterReading(models.Model):
         return self.__unicode__()
 
     class Meta:
-        unique_together = ('timestamp', 'household', 'meter_type')
+        unique_together = ('ts', 'household', 'meter_type')
