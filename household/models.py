@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django_countries.fields import CountryField
+from degreeday.models import DegreedaySource
 
 
 class Household(models.Model):
@@ -13,6 +14,7 @@ class Household(models.Model):
     country = CountryField('country')
     info = models.TextField('info', blank=True, null=True)
     active = models.BooleanField("guided at this moment", default=True)
+    degreeday_source = models.ForeignKey(DegreedaySource, blank-True, null=True)
 
     def __unicode__(self):
         return str(self.name)+"_"+str(postal_code)
@@ -42,6 +44,9 @@ class MetertypeHousehold(models.Model):
 
 
 class UserHousehold(models.Model):
+    '''
+    Table binds a user account to a household
+    '''
     household = models.ForeignKey(Household)
     user = models.OneToOneField(User, unique=True)
 

@@ -1,0 +1,12 @@
+.right-align {
+    float: right;
+}
+dd.def-inline,dt.def-inline {
+    display: inline-block;
+    float: left;
+    margin-right: 0.5em;
+}
+
+dt.def-inline {
+    clear: left;
+}
