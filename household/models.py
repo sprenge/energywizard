@@ -17,10 +17,10 @@ class Household(models.Model):
     degreeday_source = models.ForeignKey(DegreedaySource, blank=True, null=True)
 
     def __unicode__(self):
-        return str(self.name)+"_"+str(postal_code)
+        return str(self.name)+"_"+str(self.postal_code)
 
     def __str__(self):
-        return str(self.name)+"_"+str(postal_code)
+        return str(self.name)+"_"+str(self.postal_code)
 
     class Meta:
         verbose_name_plural = "Households"

@@ -1,0 +1,393 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en" ng-app="MeterApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% trans "Energymasters" %}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'theme/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{% static 'theme/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+    <!-- Theme CSS -->
+    <link href="{% static 'theme/css/agency.css' %}" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="{% static 'theme/vendor/jquery/jquery.min.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'theme/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="{% static 'theme/js/jqBootstrapValidation.js' %}"></script>
+    <script src="{% static 'theme/js/contact_me.js' %}"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="{% static 'theme/js/agency.min.js' %}"></script>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/asset-listing.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.dataTables_themeroller.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.dataTables.css' %}">
+
+    <style>
+        tr.border_bottom td {
+          border-bottom:1pt dotted gray;
+        }
+        .icon-section-opened {
+            padding-right: 0px;
+            margin-right: 0px
+        }
+        .editable-input {
+            width: 120px;
+        }
+    </style>
+
+	{% block header %}
+	{% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+
+    <script>
+
+        var csrf_token = '{{csrf_token}}';
+        var userApp = angular.module('MeterApp', []);
+        userApp.config(function($interpolateProvider){
+            $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+        });
+
+        userApp.controller('AppCtrl', ['$scope', '$window', '$http', '$q', function (scope, window, http, q){
+			scope.nameGezin = '{{gezin}}';
+			scope.meterRec = {};
+                        scope.meterRec.meterPicture = '';
+                        scope.meterRec.meterFrag = '0';
+			scope.meterRec.meterWhole = 0
+			scope.meterRec.textMeterWhole = 'Geheel gedeelte';
+			scope.meterRec.textMeterFrag = 'Gedeelte na de komma';
+			scope.meterRec.colorMeterWhole = 'black';
+			scope.meterRec.colorMeterFrag = 'black';
+			scope.meterRec.meterDag = 5
+			scope.meterRec.meterMaand = 5
+			scope.meterRec.meterJaar = 1966
+			scope.meterRec.meterUur = 9
+			scope.meterRec.meterMinuten = 49
+            scope.operators = [{
+                value: 1,
+                displayName: 'elektriciteit dag'
+            }, {
+                value: 2,
+                displayName: 'elektriciteit nacht'
+            }];
+            scope.assets = [{
+                time: 1,
+                meter_type: 'elektriciteit dag'
+            }, {
+                time: 2,
+                meter_type: 'elektriciteit nacht'
+            }];
+            scope.gezinnen = [{
+                id: 1,
+                display: 'gezin1'
+            }, {
+                id: 2,
+                display: 'gezin2'
+            }];
+			var d = q.defer();
+            http.get('/meter/get_meter_types').success(function(data) {
+                scope.operators = data.meter_types;
+				scope.meterRec.meterDef = scope.operators[0];
+				scope.meterRec.textMeterWhole = scope.meterRec.meterDef.wholeText;
+				scope.meterRec.textMeterFrag = scope.meterRec.meterDef.fragText;
+				scope.meterRec.meterJaar = data.current_time.year
+				scope.meterRec.meterMaand = data.current_time.month
+				scope.meterRec.meterDag = data.current_time.day
+				scope.meterRec.meterUur = data.current_time.hour
+				scope.meterRec.meterMinuten = data.current_time.minute
+				scope.meterRec.meterPicture = scope.meterRec.meterDef.picture
+				scope.meterRec.id = scope.meterRec.meterDef.value
+				d.resolve(data);
+            }).error(function (data, status){
+                console.log("Error status : " + status);
+                console.log(data);
+            });
+			d.promise;
+
+			var d = q.defer();
+			http.get('/meter/get_meter_readings').success(function(data) {
+                scope.assets = data;
+				d.resolve(data);
+            }).error(function (data, status){
+                console.log("Error status : " + status);
+                console.log(data);
+            });
+			d.promise;
+
+			var d = q.defer();
+			http.get('/household/getall').success(function(data) {
+                scope.gezinnen = data;
+				d.resolve(data);
+            }).error(function (data, status){
+                console.log("Error status : " + status);
+                console.log(data);
+            });
+			d.promise;
+
+			scope.meterRec.meterDef = scope.operators[1];
+
+			scope.meterSelected = function() {
+				console.log(scope.meterRec.meterDef)
+				scope.meterRec.textMeterWhole = scope.meterRec.meterDef.wholeText;
+				scope.meterRec.textMeterFrag = scope.meterRec.meterDef.fragText;
+				scope.meterRec.id = scope.meterRec.meterDef.value
+			};
+
+			scope.gezinSelected = function() {
+				console.log("gezin selected")
+                http({method: 'POST', url:'/household/save_household_user', data: scope.gezinnen_store, headers: {'X-CSRFToken': csrf_token}}).success(function(data) {
+					location.reload();
+                }).error(function (data, status){
+                    console.log(status);
+                })
+			};
+
+			scope.insertRecord = function () {
+				scope.meterWhole = 0;
+				console.log(typeof scope.meterRec.meterDate)
+
+                http({method: 'POST', url:'/meter/save_meter', data: scope.meterRec, headers: {'X-CSRFToken': csrf_token}}).success(function(data) {
+                    console.log(data);
+					// scope.meterRec = data;
+					var d = q.defer();
+					http.get('/meter/get_meter_readings').success(function(data) {
+						scope.assets = data;
+						d.resolve(data);
+					}).error(function (data, status){
+						console.log("Error status : " + status);
+						console.log(data);
+					});
+					d.promise;
+                }).error(function (data, status){
+                    console.log(status);
+                })
+			};
+        }]);
+    </script>
+
+</head>
+<body id="page-top" class="index" ng-controller="AppCtrl">
+    <!-- Navigation -->
+    <nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">{% trans "Energymasters" %}</a>
+				<img src="{% static 'theme/img/logo.png'%}" alt="Smiley face" height="80" width="80" style="background-color:white;" class="img-circle" class"fade-in">
+				<img src="{% static 'atane_logo_full.png'%}" alt="Smiley face" height="50" width="80" style="background-color:white; margin-left: 60px" class"fade-in">
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden" >
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#meterinvullen">{% trans "fill in meter reading" %}</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#meterstand">{% trans "meter reading overview" %}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">Welkom {{first_name}} {{last_name}}</div>
+                <a style="margin-right: 60px;" href="/logout/"><i class="icon_profile"></i> Log Out</a>
+				{% if energiemeester %}
+				{% if user.is_staff %}
+				<a style="margin-right: 60px;" href="/admin"><i class="icon_profile"></i> Admin</a>
+				{% endif %}
+				<span>gezin actief : {{household}} ------- {% trans "select other household" %}</span>
+				<select label="select gezin" style="margin-bottom: 20px; color:black;" ng-change="gezinSelected()" ng-model="gezinnen_store" ng-options="gezin.display for gezin in gezinnen" >
+                </select>
+				{% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Services Section -->
+    <section id="meterinvullen">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center" >
+                    <h2 class="col-lg-12 section-heading" style="margin-bottom: 2px;" >{% trans "fill in meter reading" %}</h2>
+                    <div class="col-lg-4" style="margin-bottom: 20px;"><span></span> </div>
+                    <div class="col-lg-4" style="margin-bottom: 20px;">
+                       <select style="margin-bottom: 20px;" class="col-lg-12" ng-change="meterSelected()" ng-model="meterRec.meterDef" ng-options="opt.displayName for opt in operators" >
+                       </select>
+                    </div>
+                    <div class="col-lg-4" style="margin-bottom: 20px;"><span></span></div>
+				</div>
+			</div>
+            <div class="row">
+                <div class="col-lg-12 text-center" >
+                    <div class="col-lg-4">
+                        <img src="{[{meterRec.meterPicture}]}" class="img-responsive" alt="">
+                    </div>
+                    <div class="col-lg-8" >
+                       <div class="col-lg-5" style="margin-bottom: 20px;">
+                           <input class="form-control" ng-model="meterRec.meterWhole" type="number" min="0" step="1">
+                       </div>
+                       <div class="col-lg-7" style="margin-bottom: 20px;">
+                           <p style="color:{[{meterRec.colorMeterWhole}]};">{[{meterRec.textMeterWhole}]}</p>
+                       </div>
+                       <div class="col-lg-5" style="margin-bottom: 20px;">
+                           <input class="form-control" ng-model="meterRec.meterFrag" type="string">
+                       </div>
+                       <div class="col-lg-7" style="margin-bottom: 20px;">
+                           <p style="color:{{meterRec.colorMeterFrag}};">{[{meterRec.textMeterFrag}]}</p>
+                       </div>
+                       <div class="col-lg-2" style="margin-bottom: 20px;">
+                           <input class="form-control" ng-model="meterRec.meterDag" type="number" step"1">
+                       </div>
+                       <div class="col-lg-2" style="margin-bottom: 20px;">
+                           <input class="form-control" ng-model="meterRec.meterMaand" type="number" step"1">
+                       </div>
+                       <div class="col-lg-2" style="margin-bottom: 20px;">
+                           <input class="form-control" ng-model="meterRec.meterJaar" type="number" step"1">
+                       </div>
+                       <div class="col-lg-6" style="margin-bottom: 20px;">
+                           <p>{% trans "day/month/year" %}</p>
+                       </div>
+                       <div class="col-lg-2" style="margin-bottom: 20px;">
+                           <input class="form-control" ng-model="meterRec.meterUur" type="number" step"1">
+                       </div>
+                       <div class="col-lg-2" style="margin-bottom: 20px;">
+                           <input class="form-control" ng-model="meterRec.meterMinuten" type="number" step"1">
+                       </div>
+                       <div class="col-lg-8" style="margin-bottom: 20px;">
+                           <p>{% trans "hour/minutes" %}</p>
+                       </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center" >
+					<div class="col-lg-4" style="margin-bottom: 20px;"><span></span> </div>
+					<div class="col-lg-4" style="margin-bottom: 20px;">
+						<button ng-click='insertRecord()' type="button" class="btn btn-success">Voeg toe</button>
+					</div>
+					<div class="col-lg-4" style="margin-bottom: 20px;"><span></span> </div>
+				</div>
+			</div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="meterstand">
+        <div class="container">
+            <div class="row">
+				<h2 class="col-lg-12 section-heading" style="margin-bottom: 20px;" >{% trans "meter reading " %}{[{nameGezin}]}</h2>
+				<table class="dataTable">
+				<thead>
+				  <tr>
+					<th>{% trans "timestamp" %}</th>
+					<th>{% trans "Meter type" %}</th>
+					<th>{% trans "Meter reading" %}</th>
+					<th>{% trans "Meter register" %}</th>
+				  </tr>
+				</thead>
+				<tbody>
+					<tr class="border_bottom" ng-repeat="asset in assets">
+						<td>
+							{[{asset.time}]}
+						</td>
+						<td>
+							{[{asset.meter_type}]}
+						</td>
+						<td>
+							{[{asset.meter_reading}]}
+						</td>
+						<td>
+							{[{asset.meter_register}]}
+						</td>
+				</tbody>
+				</table>
+
+			</div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="copyright">Copyright &copy; Your Website 2016</span>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline social-buttons">
+                        <li><a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline quicklinks">
+                        <li><a href="#">Privacy Policy</a>
+                        </li>
+                        <li><a href="#">Terms of Use</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+
+
+	{% block javascript %}
+	{% endblock %}
+</body>
+
+</html>

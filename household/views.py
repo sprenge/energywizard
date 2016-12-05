@@ -18,7 +18,7 @@ def get_all_households(request):
     - household name
     '''
     info = []
-    active_household_list = Household.objects.all(active=True)
+    active_household_list = Household.objects.filter(active=True)
     for household in active_household_list:
         rec = {}
         rec['id'] = household.id

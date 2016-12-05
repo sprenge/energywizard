@@ -1,0 +1,64 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-05 20:36+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: energywizard/templates/base_energy.html:12
+#: energywizard/templates/base_energy.html:211
+msgid "Energymasters"
+msgstr ""
+
+#: energywizard/templates/base_energy.html:223
+#: energywizard/templates/base_energy.html:259
+msgid "fill in meter reading"
+msgstr ""
+
+#: energywizard/templates/base_energy.html:226
+msgid "meter reading overview"
+msgstr ""
+
+#: energywizard/templates/base_energy.html:246
+msgid "select other household"
+msgstr ""
+
+#: energywizard/templates/base_energy.html:296
+msgid "day/month/year"
+msgstr ""
+
+#: energywizard/templates/base_energy.html:305
+msgid "hour/minutes"
+msgstr ""
+
+#: energywizard/templates/base_energy.html:327
+msgid "meter reading "
+msgstr ""
+
+#: energywizard/templates/base_energy.html:331
+msgid "timestamp"
+msgstr ""
+
+#: energywizard/templates/base_energy.html:332
+msgid "Meter type"
+msgstr ""
+
+#: energywizard/templates/base_energy.html:333
+msgid "Meter reading"
+msgstr ""
+
+#: energywizard/templates/base_energy.html:334
+msgid "Meter register"
+msgstr ""

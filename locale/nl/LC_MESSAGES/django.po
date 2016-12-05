@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-05 20:36+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: energywizard/templates/base_energy.html:12
+#: energywizard/templates/base_energy.html:211
+msgid "Energymasters"
+msgstr "Energiemeesters"
+
+#: energywizard/templates/base_energy.html:223
+#: energywizard/templates/base_energy.html:259
+msgid "fill in meter reading"
+msgstr "invullen meter stand"
+
+#: energywizard/templates/base_energy.html:226
+#, fuzzy
+#| msgid "fill in meter reading"
+msgid "meter reading overview"
+msgstr "Meter standen"
+
+#: energywizard/templates/base_energy.html:246
+msgid "select other household"
+msgstr "selecteer ander gezin"
+
+#: energywizard/templates/base_energy.html:296
+msgid "day/month/year"
+msgstr "dag/maand/jaar"
+
+#: energywizard/templates/base_energy.html:305
+msgid "hour/minutes"
+msgstr "uur/minuten"
+
+#: energywizard/templates/base_energy.html:327
+#, fuzzy
+#| msgid "fill in meter reading"
+msgid "meter reading "
+msgstr "meter stand"
+
+#: energywizard/templates/base_energy.html:331
+msgid "timestamp"
+msgstr "tijdstip"
+
+#: energywizard/templates/base_energy.html:332
+msgid "Meter type"
+msgstr ""
+
+#: energywizard/templates/base_energy.html:333
+#, fuzzy
+#| msgid "fill in meter reading"
+msgid "Meter reading"
+msgstr "Meter stand"
+
+#: energywizard/templates/base_energy.html:334
+msgid "Meter register"
+msgstr "Meter opnemer"

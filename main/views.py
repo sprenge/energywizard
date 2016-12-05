@@ -34,6 +34,7 @@ def homepage(request):
         return render_to_response("fatal_error.html", info, RequestContext(request))
 
     info['household'] = str(household.name)
+    print ("household", info['household'])
     info['energiemeester'] = is_user_member_of(user, 'energiemeester')
     return render_to_response("homepage.html", info, RequestContext(request))
 

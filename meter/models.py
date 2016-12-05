@@ -34,7 +34,7 @@ class MeterType(models.Model):
     energie_type = models.ForeignKey(EnergieType)
 
     def __unicode__(self):
-        return str(self.name)+"_"+str(variant)
+        return str(self.name)+"_"+str(self.variant)
 
     def __str__(self):
         return self.__unicode__()

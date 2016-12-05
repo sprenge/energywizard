@@ -14,10 +14,6 @@ from django.utils.timezone import localtime
 from household.models import UserHousehold
 
 
-def testje(request):
-    return render_to_response("enter_meter.html", {}, RequestContext(request))
-
-
 def get_meter_types(request):
     meter_info = {'result': True}
     user = User.objects.get(username=request.user)
@@ -27,7 +23,7 @@ def get_meter_types(request):
     except Exception as e:
         print (e)
         return meter_info
-    meter_types_household = MeterTypeHouseHold.objects.filter(household=household)
+    meter_types_household = MetertypeHousehold.objects.filter(household=household)
     meter_list = []
     for meter_type_household in meter_types_household:
         meter_rec = {}
@@ -36,7 +32,7 @@ def get_meter_types(request):
         meter_rec['wholeText'] = meter_type_household.meter_type.color_whole
         meter_rec['fragText'] = meter_type_household.meter_type.color_fraction
         print ("photo", meter_type_household.meter_type.photo)
-        if meter_type_gezin.meter_type.photo != "":
+        if meter_type_household.meter_type.photo != "":
             meter_rec['picture'] = meter_type_household.meter_type.photo.url
         else:
             meter_rec['picture'] = '/static/theme/img/icon_meter.png'
@@ -64,7 +60,7 @@ def save_meter(request):
 
         user = User.objects.get(username=request.user)
         try:
-            household_rec = UserHouseHold.objects.get(user=user)
+            household_rec = UserHousehold.objects.get(user=user)
             household = household_rec.household
         except Exception as e:
             print (e)
@@ -73,13 +69,13 @@ def save_meter(request):
 
         meter_reading = MeterReading()
         meter_reading.meter_register = user
-        meter_type_household = MeterTypeHousehold.objects.get(id=data['id'])
+        meter_type_household = MetertypeHousehold.objects.get(id=data['id'])
         meter_type = meter_type_household.meter_type
         meter_reading.meter_type = meter_type
         meter_reading.household = household
         try:
             meter_r = str(data['meterWhole']) + "." + data['meterFrag']
-            meter_reading.stand = float(meter_r)
+            meter_reading.meter_reading = float(meter_r)
         except Exception as e:
             print (e)
             r['reason'] = "Meter reading not correct"
@@ -126,9 +122,9 @@ def get_meter_readings(request):
     meter_list = []
     for meter_reading in meter_readings:
         rec = {}
-        dt = localtime(meter_stand.tijdstip)
+        dt = localtime(meter_reading.ts)
         rec['time'] = dt.strftime('%d %b %Y %H:%M')
-        rec['meter_type'] = str(meter_reading.meter_type)
+        rec['meter_type'] = str(meter_reading.meter_type.name)
         rec['meter_reading'] = str(meter_reading.meter_reading)
         rec['meter_register'] = \
             str(meter_reading.meter_register.first_name) + " " +\

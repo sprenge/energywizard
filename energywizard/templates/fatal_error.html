@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" ng-app="MeterApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Energiemeesters</title>
+</head>
+<body>
+<h1>Er is een fatal fout opgetreden</h1>
+{% if user.is_staff %}
+<p>Kijk de GebruikerGezin tabel eens na via http://<tbc>/admin</p>
+<p>Deze tabel moet een record bevatten voor elke active gebruiker, zowel gezinsleden als energiemeesters</p>
+<p>Ben je misschien nog aangelogged met de energiemeester account ?  Deze account dient alleen om gebuikers aan te maken zonder dat je al een eigen account hebt.</p>
+{% else %}
+<h2>Contacteer je energiemeester</h2>
+{% endif %}
+</body>
