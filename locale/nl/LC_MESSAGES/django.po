@@ -29,7 +29,6 @@ msgid "fill in meter reading"
 msgstr "invullen meter stand"
 
 #: energywizard/templates/base_energy.html:226
-#, fuzzy
 #| msgid "fill in meter reading"
 msgid "meter reading overview"
 msgstr "Meter standen"
@@ -47,7 +46,6 @@ msgid "hour/minutes"
 msgstr "uur/minuten"
 
 #: energywizard/templates/base_energy.html:327
-#, fuzzy
 #| msgid "fill in meter reading"
 msgid "meter reading "
 msgstr "meter stand"
@@ -61,7 +59,6 @@ msgid "Meter type"
 msgstr ""
 
 #: energywizard/templates/base_energy.html:333
-#, fuzzy
 #| msgid "fill in meter reading"
 msgid "Meter reading"
 msgstr "Meter stand"
