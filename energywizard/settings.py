@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'degreeday',
     'household',
     'meter',
+    'graphs',
 ]
 
 MIDDLEWARE_CLASSES = [

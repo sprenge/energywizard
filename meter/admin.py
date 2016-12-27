@@ -15,6 +15,10 @@ class MeterReadingAdmin(ImportExportModelAdmin):
     resource_class = ReadingResource
 
 
+class EnergyTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'is_device')
+    list_filter = ('is_device',)
+
 admin.site.register(EnergieType)
-admin.site.register(MeterType)
+admin.site.register(MeterType, EnergyTypeAdmin)
 admin.site.register(MeterReading, MeterReadingAdmin)

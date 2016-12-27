@@ -32,6 +32,7 @@ class MeterType(models.Model):
     max_fraction = models.IntegerField("maximum number of figures fraction part", default=4)  # 0 is disabled
     photo = models.ImageField("photo meter (200x200)", blank=True, null=True)
     energie_type = models.ForeignKey(EnergieType)
+    is_device = models.BooleanField("is a device", default=False)
 
     def __unicode__(self):
         return str(self.name)+"_"+str(self.variant)

@@ -1,6 +1,75 @@
 {% extends "base_graph.html" %}
 
+{% block javascripts %}
+var csrf_token = '{{csrf_token}}';
+var userapp = angular.module('GraphApp', ['nvd3']).controller('myCtrl', function($scope, $http, $q){
+
+  $scope.options = {
+            chart: {
+                type: 'historicalBarChart',
+                height: 450,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 65,
+                    left: 50
+                },
+                x: function(d){return d[0];},
+                y: function(d){return d[1];},
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format(',.1f')(d);
+                },
+                duration: 100,
+                xAxis: {
+                    axisLabel: 'X Axis',
+                    tickFormat: function(d) {
+                        return d3.time.format('%x')(new Date(d))
+                    },
+                    rotateLabels: 30,
+                    showMaxMin: false
+                },
+                yAxis: {
+                    axisLabel: 'Y Axis',
+                    axisLabelDistance: -10,
+                    tickFormat: function(d){
+                        return d3.format(',.1f')(d);
+                    }
+                },
+                tooltip: {
+                    keyFormatter: function(d) {
+                        return d3.time.format('%x')(new Date(d));
+                    }
+                },
+                zoom: {
+                    enabled: true,
+                    scaleExtent: [1, 10],
+                    useFixedDomain: false,
+                    useNiceScale: false,
+                    horizontalOff: false,
+                    verticalOff: true,
+                    unzoomEventType: 'dblclick.zoom'
+                }
+            }
+        };
+
+        var d = $q.defer();
+        $http.get('/graph/get_meter_values/{{household}}/{{meter}}').success(function(data) {
+                $scope.data = data;
+                d.resolve(data);
+            }).error(function (data, status){
+                console.log("Error status : " + status);
+                console.log(data);
+            });
+        d.promise;
+
+
+    })
+{% endblock %}
 {% block graphs %}
-{{ the_div|safe }} 
-{{ the_script|safe }}
+<div ng-app="GraphApp">
+    <div ng-controller="myCtrl">
+        <nvd3 options="options" data="data"></nvd3>
+    </div>
+</div>
 {% endblock %}
