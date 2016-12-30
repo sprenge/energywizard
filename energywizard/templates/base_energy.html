@@ -239,14 +239,12 @@
             <div class="intro-text">
                 <div class="intro-lead-in">Welkom {{first_name}} {{last_name}}</div>
                 <a style="margin-right: 60px;" href="/logout/"><i class="icon_profile"></i> Log Out</a>
-				{% if energiemeester %}
 				{% if user.is_staff %}
 				<a style="margin-right: 60px;" href="/admin"><i class="icon_profile"></i> Admin</a>
 				{% endif %}
 				<span>gezin actief : {{household}} ------- {% trans "select other household" %}</span>
 				<select label="select gezin" style="margin-bottom: 20px; color:black;" ng-change="gezinSelected()" ng-model="gezinnen_store" ng-options="gezin.display for gezin in gezinnen" >
                 </select>
-				{% endif %}
             </div>
         </div>
     </header>

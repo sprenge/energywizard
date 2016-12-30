@@ -19,11 +19,20 @@ def get_all_households(request):
     '''
     info = []
     active_household_list = Household.objects.filter(active=True)
+    user = User.objects.get(username=request.user)
     for household in active_household_list:
-        rec = {}
-        rec['id'] = household.id
-        rec['display'] = household.name
-        info.append(rec)
+        grp_found = False
+        for grp in user.groups.all():
+            print (grp, household.group)
+            if grp.name == household.group.name:
+                grp_found = True
+
+        if grp_found:
+            print ("add")
+            rec = {}
+            rec['id'] = household.id
+            rec['display'] = household.name
+            info.append(rec)
 
     return JsonResponse(info, safe=False)
 

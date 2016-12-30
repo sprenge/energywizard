@@ -33,6 +33,10 @@ def homepage(request):
         print (e)
         return render_to_response("fatal_error.html", info, RequestContext(request))
 
+    for grp in user.groups.all():
+        if grp == household.group:
+            info['group'] = grp.name
+
     info['household'] = str(household.name)
     print ("household", info['household'])
     info['energiemeester'] = is_user_member_of(user, 'energiemeester')
