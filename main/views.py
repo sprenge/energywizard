@@ -8,6 +8,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
+from django.utils.translation import get_language
 from household.models import UserHousehold
 
 
@@ -23,6 +24,7 @@ def is_user_member_of(user, group):
 @login_required
 def homepage(request):
     info = {}
+    print ("espr", get_language())
     user = User.objects.get(username=request.user)
     info['first_name'] = user.first_name
     info['last_name'] = user.last_name

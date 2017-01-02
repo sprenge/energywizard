@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-05 20:36+0100\n"
+"POT-Creation-Date: 2016-12-30 11:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgid "Energymasters"
 msgstr ""
 
 #: energywizard/templates/base_energy.html:223
-#: energywizard/templates/base_energy.html:259
+#: energywizard/templates/base_energy.html:257
 msgid "fill in meter reading"
 msgstr ""
 
@@ -31,34 +31,38 @@ msgstr ""
 msgid "meter reading overview"
 msgstr ""
 
-#: energywizard/templates/base_energy.html:246
+#: energywizard/templates/base_energy.html:245
 msgid "select other household"
 msgstr ""
 
-#: energywizard/templates/base_energy.html:296
+#: energywizard/templates/base_energy.html:294
 msgid "day/month/year"
 msgstr ""
 
-#: energywizard/templates/base_energy.html:305
+#: energywizard/templates/base_energy.html:303
 msgid "hour/minutes"
 msgstr ""
 
-#: energywizard/templates/base_energy.html:327
+#: energywizard/templates/base_energy.html:325
 msgid "meter reading "
 msgstr ""
 
-#: energywizard/templates/base_energy.html:331
+#: energywizard/templates/base_energy.html:329
 msgid "timestamp"
 msgstr ""
 
-#: energywizard/templates/base_energy.html:332
+#: energywizard/templates/base_energy.html:330
 msgid "Meter type"
 msgstr ""
 
-#: energywizard/templates/base_energy.html:333
+#: energywizard/templates/base_energy.html:331
 msgid "Meter reading"
 msgstr ""
 
-#: energywizard/templates/base_energy.html:334
+#: energywizard/templates/base_energy.html:332
 msgid "Meter register"
+msgstr ""
+
+#: graphs/templates/base_graph.html:18
+msgid "Graphs"
 msgstr ""
