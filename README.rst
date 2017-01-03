@@ -25,4 +25,4 @@ Configuration Steps (via admin interface)
 - Assign user to a household (this is the initial household for the supervisor) --> HOUSEHOLD
 - Assign meter types to the household --> METER
 
-.. image:: admin-interface.png
+Screenshot for the admin interface : https://github.com/sprenge/energywizard/blob/master/admin_interface.png
